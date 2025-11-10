@@ -1,20 +1,29 @@
+import serial
 import socket
 import struct
 import threading
 import time
-from picamera2 import Picamera2
+from picamera2 import Picamera2 # pyright: ignore[reportMissingImports]
 
 # UDP 指令接收端配置
 UDP_CTRL_IP = "0.0.0.0"
 UDP_CTRL_PORT = 12345   # 树莓派端监听frp服务器端口, 和树莓派frpc.toml中的localPort一致
 
 # UDP 视频流发送端配置
-SERVER_IP = "服务器公网ip"
+SEND_VIDEO = False
+SERVER_IP = "47.118.30.136"
 UDP_VIDEO_PORT = 13300  # 树莓派端向frp服务器发送消息的端口, 和Unity端frpc.toml中的remotePort一致
 RESOLUTION = (128, 64)  # 视频分辨率
 FPS = 30                # 视频帧率
 CHUNK_SIZE = 1024       # 视频帧分片大小
 MAGIC_NUM = 0xEAEAEFEF  # 帧头标识
+
+ser = serial.Serial("/dev/ttyS0", baudrate=115200, timeout=0.01)  # 建立串口通信
+
+# 建立socket客户端
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+sock.bind((UDP_CTRL_IP, UDP_CTRL_PORT))
+print(f"[CTRL] UDP listening on {UDP_CTRL_PORT}")
 
 # 视频流传输线程    
 def video_stream_thread():
@@ -43,21 +52,28 @@ def video_stream_thread():
         for i in range(0, len(frame_data), CHUNK_SIZE):
             chunk = frame_data[i:i + CHUNK_SIZE]
             sock.sendto(chunk, (SERVER_IP, UDP_VIDEO_PORT))
-        
+
+# 接收控制数据
+def recv_cmd():
+    data, addr = sock.recvfrom(32)
+    cmd = data.decode("utf-8").strip
+    print(f"[CTRL] Received cmd: '{cmd}' from {addr}")
+
+    if cmd in ["00", "11"]:
+        ser_cmd = '@' + cmd + '*'  # 加上串口指令首部尾部
+        ser.write(ser_cmd.encode("utf-8"))
+        ser.flush()
+        print(f"[SERIAL] Sent to STM32: {ser_cmd}")
+
 def main():
-    # 视频流发送子线程
-    t_video = threading.Thread(target=video_stream_thread, daemon=True)
-    t_video.start()
-    
-    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    sock.bind((UDP_CTRL_IP, UDP_CTRL_PORT))
-    print(f"[CTRL] UDP listening on {UDP_CTRL_PORT}")
-    
+    if SEND_VIDEO:
+        # 视频流发送子线程
+        t_video = threading.Thread(target=video_stream_thread, daemon=True)
+        t_video.start()
+
     # 主线程接收控制数据
     while True:
-        data, addr = sock.recvfrom(32)
-        cmd = data.decode("utf-8").strip()
-        print(f"[CTRL] Received cmd: '{cmd}' from {addr}")
+        recv_cmd()
 
 if __name__ == "__main__":
     main()
