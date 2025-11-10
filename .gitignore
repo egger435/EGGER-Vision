@@ -14,3 +14,28 @@
 # 本地配置文件
 _frpc_setup.bat
 _frpc.toml
+
+# STM32文件
+# dot files
+STM32/.vscode/launch.json
+STM32/.settings
+STM32/.eide/log
+STM32/.eide.usr.ctx.json
+
+# project out
+STM32/build
+STM32/bin
+STM32/obj
+STM32/out
+
+# eide template
+*.ept
+*.eide-template
+
+STM32/.clang-format
+STM32/.vscode/.cortex-debug.peripherals.state.json
+STM32/.vscode/.cortex-debug.registers.state.json
+STM32/.vscode/settings.json
+STM32/.vscode/tasks.json
+/STM32/hal
+/STM32/lib
