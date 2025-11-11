@@ -18,15 +18,22 @@ FPS = 30                # 视频帧率
 CHUNK_SIZE = 1024       # 视频帧分片大小
 MAGIC_NUM = 0xEAEAEFEF  # 帧头标识
 
+global log_index
+log_index = 0
+
 ser = serial.Serial("/dev/ttyS0", baudrate=115200, timeout=0.01)  # 建立串口通信
+print(f"[SERIAL] Serial start; l_i: {log_index}")
+log_index += 1
 
 # 建立socket客户端
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock.bind((UDP_CTRL_IP, UDP_CTRL_PORT))
-print(f"[CTRL] UDP listening on {UDP_CTRL_PORT}")
+print(f"[CTRL] UDP listening on {UDP_CTRL_PORT}; l_i: {log_index}")
+log_index += 1
 
 # 视频流传输线程    
 def video_stream_thread():
+    global log_index
     # 摄像头初始化
     picam = Picamera2()
     config = picam.create_video_configuration(
@@ -38,7 +45,8 @@ def video_stream_thread():
     time.sleep(1)
     
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    print(f"[VIDEO] Start sending to {SERVER_IP}:{UDP_VIDEO_PORT}")
+    print(f"[VIDEO] Start sending to {SERVER_IP}:{UDP_VIDEO_PORT}; l_i: {log_index}")
+    log_index += 1
     
     while True:
         array = picam.capture_array()
@@ -55,15 +63,18 @@ def video_stream_thread():
 
 # 接收控制数据
 def recv_cmd():
+    global log_index
     data, addr = sock.recvfrom(32)
-    cmd = data.decode("utf-8").strip
-    print(f"[CTRL] Received cmd: '{cmd}' from {addr}")
+    cmd = data.decode("utf-8").strip()
+    print(f"[CTRL] Received cmd: '{cmd}' from {addr}; l_i: {log_index}")
+    log_index += 1
 
-    if cmd in ["00", "11"]:
+    if cmd in ["00", "11", "LCS"]:
         ser_cmd = '@' + cmd + '*'  # 加上串口指令首部尾部
         ser.write(ser_cmd.encode("utf-8"))
         ser.flush()
-        print(f"[SERIAL] Sent to STM32: {ser_cmd}")
+        print(f"[SERIAL] Sent to STM32: {ser_cmd}; l_i: {log_index}")
+        log_index += 1
 
 def main():
     if SEND_VIDEO:

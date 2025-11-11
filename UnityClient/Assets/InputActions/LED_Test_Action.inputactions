@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "name": "LED_Test_Action",
+    "maps": [
+        {
+            "name": "LED_Test",
+            "id": "98f299cc-2556-4410-b83e-26e948fe7282",
+            "actions": [
+                {
+                    "name": "Change_LED_State",
+                    "type": "Button",
+                    "id": "0ef80666-a6ba-473e-8ac1-11643c8ee31a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "0b469e54-dd1d-4767-8154-f4a2908c495c",
+                    "path": "<Gamepad>/dpad/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Change_LED_State",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

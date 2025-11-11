@@ -10,9 +10,18 @@ using System.IO;
 
 public class UDPCtrl : MonoBehaviour
 {
+    public static UDPCtrl Instance;
+
+    [Header("配置文本输入框组件")]
+    public InputField serverIPInput;
+    public InputField msgSendPortInput;
+    public InputField msgReceivePortInput;
+    public InputField frpSetupNameInput;
+
     [Header("配置文本组件")]
     public Text serverIPText;
-    public Text MsgSendPortText;
+    public Text msgSendPortText;
+    public Text msgReceivePortText;
     public Text frpSetupNameText;
 
     private string serverIP = "0.0.0.0";
@@ -31,16 +40,31 @@ public class UDPCtrl : MonoBehaviour
 
     void Start()
     {
+        if (Instance == null)
+            Instance = this;
+    }
 
+    // 自动配置
+    public void AutoSetup()
+    {
+        serverIPText.text = "47.118.30.136";
+        msgSendPortText.text = "12300";
+        msgReceivePortText.text = "13300";
+        frpSetupNameText.text = "_frpc_setup.bat";
+
+        serverIPInput.text = "47.118.30.136";
+        msgSendPortInput.text = "12300";
+        msgReceivePortInput.text = "13300";
+        frpSetupNameInput.text = "_frpc_setup.bat";
     }
 
     // 配置确认
     public void SendSetupConfirm()
     {
-        if (serverIPText == null || MsgSendPortText == null)
+        if (serverIPText == null || msgSendPortText == null)
             return;
         serverIP = serverIPText.text;
-        MSG_SEND_PORT = int.Parse(MsgSendPortText.text);
+        MSG_SEND_PORT = int.Parse(msgSendPortText.text);
         frpSetupName = frpSetupNameText.text;
     }
 
@@ -128,15 +152,28 @@ public class UDPCtrl : MonoBehaviour
     }
 
     // 发送命令
-    public void SendCommand()
+    public void SendCommand(string cmd)
     {
         try
         {
             IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(serverIP), MSG_SEND_PORT);
-            byte[] data = System.Text.Encoding.UTF8.GetBytes(sendText.text);
+            byte[] data = null;
+            string message = string.Empty;
+            
+            if (string.IsNullOrEmpty(cmd))  // 文本输入框发送
+            {
+                data = System.Text.Encoding.UTF8.GetBytes(sendText.text);
+                message = sendText.text;
+            }
+            else
+            {
+                data = System.Text.Encoding.UTF8.GetBytes(cmd);
+                message = cmd;
+            }
+
             udpSendClient.Send(data, data.Length, endPoint);
-            UnityEngine.Debug.Log("send:" + sendText.text);
-            logText.text = logText.text + "\nsend:" + sendText.text;
+            UnityEngine.Debug.Log("send:" + message);
+            logText.text = logText.text + "\nsend:" + message;
         }
         catch (System.Exception e)
         {
