@@ -8,7 +8,7 @@ char Serial_RxString[100];  // 串口接收字符串
 
 uint8_t Serial_RxFlag;  // 串口接收标志
 
-// 串口接收初始化
+// 串口初始化
 void Serial_Init(void)
 {
     // 使能时钟
@@ -50,6 +50,23 @@ void Serial_Init(void)
     NVIC_Init(&NVIC_InitStructure); // 初始化NVIC
 
     USART_Cmd(USART1, ENABLE);
+}
+
+// 发送一个字节
+void Serial_SendByte(uint8_t byte)
+{
+    USART_SendData(USART1, byte);
+    while (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET);  // 等待发送完成
+}
+
+// 发送字符串
+void Serial_SendString(char *str)
+{
+    uint8_t i = 0;
+    while (str[i] != '\0')
+    {
+        Serial_SendByte(str[i++]);
+    }
 }
 
 // 获取接收标志位

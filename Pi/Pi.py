@@ -69,12 +69,11 @@ def recv_cmd():
     print(f"[CTRL] Received cmd: '{cmd}' from {addr}; l_i: {log_index}")
     log_index += 1
 
-    if cmd in ["00", "11", "LCS"]:
-        ser_cmd = '@' + cmd + '*'  # 加上串口指令首部尾部
-        ser.write(ser_cmd.encode("utf-8"))
-        ser.flush()
-        print(f"[SERIAL] Sent to STM32: {ser_cmd}; l_i: {log_index}")
-        log_index += 1
+    ser_cmd = '@' + cmd + '*'  # 加上串口指令首部尾部
+    ser.write(ser_cmd.encode("utf-8"))
+    ser.flush()
+    print(f"[SERIAL] Sent to STM32: {ser_cmd}; l_i: {log_index}")
+    log_index += 1
 
 def main():
     if SEND_VIDEO:
