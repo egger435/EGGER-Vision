@@ -6,6 +6,8 @@
 /UnityClient/Temp
 /UnityClient/.vs
 
+/Build
+
 # Visual Studio生成的文件
 /UnityClient/.vsconfig
 /UnityClient/*.csproj
