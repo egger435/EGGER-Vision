@@ -31,7 +31,7 @@ public class LEDTestCtrl : MonoBehaviour
     private void OnButtonPress(InputAction.CallbackContext context)
     {
         Debug.Log("°´¼ü°´ÏÂ");
-        UDPCtrl.Instance.SendCommand("LCS");
+        UDPCtrl.Instance.SendCommand(ControlCmd.ChangeLEDState);
     }
 
     private void OnButtonRelease(InputAction.CallbackContext context)

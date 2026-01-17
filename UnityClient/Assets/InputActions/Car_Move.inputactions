@@ -1,30 +1,30 @@
 {
     "version": 1,
-    "name": "LED_Test_Action",
+    "name": "Car_Move",
     "maps": [
         {
-            "name": "LED_Test",
-            "id": "98f299cc-2556-4410-b83e-26e948fe7282",
+            "name": "Car_Move",
+            "id": "f1db58c7-e5ea-43ff-ba66-2dce72723787",
             "actions": [
                 {
-                    "name": "Change_LED_State",
-                    "type": "Button",
-                    "id": "0ef80666-a6ba-473e-8ac1-11643c8ee31a",
+                    "name": "Move",
+                    "type": "Value",
+                    "id": "94e766a1-4952-4d60-a970-4b1b83ae6b46",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
                 {
                     "name": "",
-                    "id": "0b469e54-dd1d-4767-8154-f4a2908c495c",
-                    "path": "<XInputController>/dpad/up",
+                    "id": "d90eb6c7-f40d-46b5-ae40-0956aa381d52",
+                    "path": "<XInputController>/rightTrigger",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Change_LED_State",
+                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -1,0 +1,75 @@
+{
+    "version": 1,
+    "name": "Cam_Action",
+    "maps": [
+        {
+            "name": "Cam_Action",
+            "id": "b270698c-178f-459a-995f-bc58f83a4f4b",
+            "actions": [
+                {
+                    "name": "Rotate_Camera_Left",
+                    "type": "Button",
+                    "id": "d214c1cd-794e-4077-8043-12303d3d5860",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Rotate_Camera_Right",
+                    "type": "Button",
+                    "id": "1dd6f92f-8f8b-4c64-8294-02969d60e4e2",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Rotate_Camera_Behind",
+                    "type": "Button",
+                    "id": "f47e3b08-1ada-4a57-8552-b865fa7dc0c6",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "b005ed29-8d94-4760-8604-73b5d1022bd2",
+                    "path": "<XInputController>/dpad/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Rotate_Camera_Left",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "727565b3-c9de-411b-a6a6-aec391a69c46",
+                    "path": "<XInputController>/dpad/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Rotate_Camera_Right",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "05a3da67-e010-47e9-899e-fcd73e010934",
+                    "path": "<XInputController>/dpad/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Rotate_Camera_Behind",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

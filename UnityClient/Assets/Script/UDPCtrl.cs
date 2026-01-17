@@ -7,6 +7,33 @@ using UnityEngine.UI;
 using System.Threading;
 using System.Diagnostics;
 using System.IO;
+using UnityEngine.UIElements;
+
+public class ControlCmd
+{
+    // 静态无参数指令
+    public static string RotateCameraLeft    = "RCL";     // 摄像头左转
+    public static string RotateCameraRight   = "RCR";     // 摄像头右转
+    public static string RotateCameraBehind  = "RCB";     // 摄像头向后转
+    public static string RotateCamerainPlace = "RCP";     // 摄像头复位
+    public static string ChangeLEDState      = "LCS";     // 改变LED状态，测试指令
+
+    // 动态参数指令
+    public static string MotorSpeed(int speed)          // 设置电机速度，MS:'speed'
+    {
+        return "MS:" + speed.ToString();
+    }
+
+    public static string SteeringServoAngle(int angle)  // 设置方向舵机转向角度，SSA:'angle'
+    {
+        return "SSA:" + angle.ToString();
+    }
+
+    public static string ShiftGear(char gear)             // 切换挡位，SG:'gear'，前进档D，倒车档R，空档N
+    {
+        return "SG:" + gear;
+    }
+}
 
 public class UDPCtrl : MonoBehaviour
 {
@@ -47,12 +74,12 @@ public class UDPCtrl : MonoBehaviour
     // 自动配置
     public void AutoSetup()
     {
-        serverIPText.text = "47.118.30.136";
+        serverIPText.text = "47.110.89.148";
         msgSendPortText.text = "12300";
         msgReceivePortText.text = "13300";
         frpSetupNameText.text = "_frpc_setup.bat";
 
-        serverIPInput.text = "47.118.30.136";
+        serverIPInput.text = "47.110.89.148";
         msgSendPortInput.text = "12300";
         msgReceivePortInput.text = "13300";
         frpSetupNameInput.text = "_frpc_setup.bat";
@@ -171,9 +198,12 @@ public class UDPCtrl : MonoBehaviour
                 message = cmd;
             }
 
-            udpSendClient.Send(data, data.Length, endPoint);
-            UnityEngine.Debug.Log("send:" + message);
-            logText.text = logText.text + "\nsend:" + message;
+            if (data.Length > 0)
+            {
+                udpSendClient.Send(data, data.Length, endPoint);
+                UnityEngine.Debug.Log("send:" + message);
+                logText.text = logText.text + "\nsend:" + message;
+            }
         }
         catch (System.Exception e)
         {
