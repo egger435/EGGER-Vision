@@ -1,6 +1,8 @@
 #ifndef __CMDCTRL_H
 #define __CMDCTRL_H
 
+#include "sys.h"
+
 typedef void (*CmdHandler)(char *args);  // 函数指针, 处理指令
 
 // 指令表结构体

@@ -1,16 +1,10 @@
 #include "stm32f10x.h"
-#include "./Module/Delay.h"
-#include "./Module/TestLED.h"
-#include "./Module/Serial.h"
-#include "./Module/CmdCtrl.h"
-#include "./Module/CamServo.h"
+#include "sys/sys.h"
 
 void Setup(void)
 {
-    TestLED_Init();
-    Serial_Init();
-    Cam_Servo_Init(); 
-   
+    Sys_Init();
+    
 }
 
 void Loop(void)
