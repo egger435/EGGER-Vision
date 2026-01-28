@@ -6,22 +6,24 @@ import time
 from picamera2 import Picamera2 # pyright: ignore[reportMissingImports]
 
 # UDP 指令接收端配置
-UDP_CTRL_IP = "0.0.0.0"
-UDP_CTRL_PORT = 12345   # 树莓派端监听frp服务器端口, 和树莓派frpc.toml中的localPort一致
+UDP_CTRL_IP    = "0.0.0.0"
+UDP_CTRL_PORT  = 12345            # 树莓派端监听frp服务器端口, 和树莓派frpc.toml中的localPort一致
 
 # UDP 视频流发送端配置
-SEND_VIDEO = False
-SERVER_IP = "47.118.30.136"
-UDP_VIDEO_PORT = 13300  # 树莓派端向frp服务器发送消息的端口, 和Unity端frpc.toml中的remotePort一致
-RESOLUTION = (128, 64)  # 视频分辨率
-FPS = 30                # 视频帧率
-CHUNK_SIZE = 1024       # 视频帧分片大小
-MAGIC_NUM = 0xEAEAEFEF  # 帧头标识
+SEND_VIDEO     = False
+SERVER_IP      = "47.110.89.148"  # frp服务器公网ip地址
+UDP_VIDEO_PORT = 13300            # 树莓派端向frp服务器发送消息的端口, 和Unity端frpc.toml中的remotePort一致
+RESOLUTION     = (128, 64)        # 视频分辨率
+FPS            = 30               # 视频帧率
+CHUNK_SIZE     = 1024             # 视频帧分片大小
+MAGIC_NUM      = 0xEAEAEFEF       # 帧头标识
 
+# 全局日志索引
 global log_index
 log_index = 0
 
-ser = serial.Serial("/dev/ttyS0", baudrate=115200, timeout=0.01)  # 建立串口通信
+# 建立串口通信
+ser = serial.Serial("/dev/ttyS0", baudrate=115200, timeout=0.01)  
 print(f"[SERIAL] Serial start; l_i: {log_index}")
 log_index += 1
 
@@ -34,6 +36,7 @@ log_index += 1
 # 视频流传输线程    
 def video_stream_thread():
     global log_index
+
     # 摄像头初始化
     picam = Picamera2()
     config = picam.create_video_configuration(
@@ -64,6 +67,7 @@ def video_stream_thread():
 # 接收控制数据
 def recv_cmd():
     global log_index
+    
     data, addr = sock.recvfrom(32)
     cmd = data.decode("utf-8").strip()
     print(f"[CTRL] Received cmd: '{cmd}' from {addr}; l_i: {log_index}")
