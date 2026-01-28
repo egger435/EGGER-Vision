@@ -14,6 +14,8 @@ void TestLED_Init(void)
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
     
     GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+    TestLED_TurnOn();
 }
 
 // LED亮

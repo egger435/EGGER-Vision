@@ -1,4 +1,5 @@
 #include "TestLED.h"
+#include "CamServo.h"
 #include "CmdCtrl.h"
 #include "string.h"
 
@@ -73,12 +74,12 @@ void Cmd_Change_LED_State(char *args)
 
 void Cmd_Rotate_Camera_Left(char *args)
 {
-    // TODO: 控制摄像头舵机左转
+    Cam_Servo_RotateLeft();
 }
 
 void Cmd_Rotate_Camera_Right(char *args)
 {
-    // TODO: 控制摄像头舵机右转
+    Cam_Servo_RotateRight();
 }
 
 void Cmd_Rotate_Camera_Behind(char *args)
@@ -88,7 +89,7 @@ void Cmd_Rotate_Camera_Behind(char *args)
 
 void Cmd_Rotate_Camera_in_Place(char *args)
 {
-    // TODO: 控制摄像头舵机归位
+    Cam_Servo_ResetPos();
 }
 
 void Cmd_Steering_Servo_Angle(char *args)
