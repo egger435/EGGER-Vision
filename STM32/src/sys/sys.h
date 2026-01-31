@@ -5,8 +5,9 @@
 #include "CmdCtrl.h"
 #include "Delay.h"
 #include "../hardware/Serial.h"
-#include "../hardware/CamServo.h"
 #include "../hardware/TestLED.h"
+#include "../hardware/CamServo.h"
+#include "../hardware/SteeringServo.h"
 
 void Sys_Init(void);
 

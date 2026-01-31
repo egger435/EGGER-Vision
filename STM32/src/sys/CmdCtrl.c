@@ -1,5 +1,6 @@
 #include "CmdCtrl.h"
 #include "string.h"
+#include "stdlib.h"
 
 void Cmd_Change_LED_State(char *args);        // LCS, 改变LED灯状态
 
@@ -58,6 +59,7 @@ void Cmd_Ctrl(char *cmd)
     }
 }
 
+// 改变LED状态
 void Cmd_Change_LED_State(char *args)
 {
     if (LED_State == 1)
@@ -70,29 +72,36 @@ void Cmd_Change_LED_State(char *args)
     }
 }
 
+// 控制摄像头左转
 void Cmd_Rotate_Camera_Left(char *args)
 {
     Cam_Servo_RotateLeft();
 }
 
+// 控制摄像头右转
 void Cmd_Rotate_Camera_Right(char *args)
 {
     Cam_Servo_RotateRight();
 }
 
+// 控制摄像头向后转
 void Cmd_Rotate_Camera_Behind(char *args)
 {
     // TODO: 控制摄像头舵机向后转
 }
 
+// 控制摄像头归位
 void Cmd_Rotate_Camera_in_Place(char *args)
 {
     Cam_Servo_ResetPos();
 }
 
+// 设置方向舵机角度
 void Cmd_Steering_Servo_Angle(char *args)
 {
-    // TODO: 设置方向舵机的角度
+    // 获取目标角度值
+    int targetAngle = atoi(args);
+    Steering_Servo_SetAngle(targetAngle);
 }
 
 void Cmd_Shift_Gear(char *args)

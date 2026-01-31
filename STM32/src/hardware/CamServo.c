@@ -15,7 +15,7 @@ void Cam_Servo_SetAngle(float angle)
     if (angle > 180.0f) angle = 180.0f;
 
     uint16_t pulse_width = (uint16_t)(500 + (angle / 180.0f) * 2000); // 计算脉宽
-    CAM_Servo_PWN_SetCompare3(pulse_width);
+    CAM_Servo_PWM_SetCompare3(pulse_width);
 }
 
 // 摄像头舵机左转
