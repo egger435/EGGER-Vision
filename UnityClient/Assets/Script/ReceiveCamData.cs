@@ -23,7 +23,7 @@ public class ReceiveCamData : MonoBehaviour
     public Text MsgResvPortText;
 
     [Header("视频流接收")]
-    private int MSG_RECEIVE_PORT = 00000; // Unity监听frp服务器端口
+    private int MSG_RECEIVE_PORT = 13300; // Unity监听frp服务器端口
     public RawImage display;             
     private Texture2D texture;
 
