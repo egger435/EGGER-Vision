@@ -52,7 +52,6 @@ public class ReceiveCamData : MonoBehaviour
     {
         // Ã˘Õº≥ı ºªØ
         texture = new Texture2D(128, 64, TextureFormat.RGB24, false, true);
-        texture.filterMode = FilterMode.Point;
         texture.wrapMode = TextureWrapMode.Clamp;
         texture.Apply(false);
         display.texture = texture;
