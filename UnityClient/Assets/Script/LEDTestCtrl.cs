@@ -37,6 +37,5 @@ public class LEDTestCtrl : MonoBehaviour
     private void OnButtonRelease(InputAction.CallbackContext context)
     {
         Debug.Log("°´¼üËÉ¿ª");
-        //UDPCtrl.Instance.SendCommand("CS");
     }
 }

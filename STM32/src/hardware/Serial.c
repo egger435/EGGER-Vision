@@ -1,9 +1,5 @@
 #include <stm32f10x.h>
-
-#define USART1_TX_PIN GPIO_Pin_9   // USART1_TX
-#define USART1_RX_PIN GPIO_Pin_10  // USART1_RX
-#define USART1_PI_BAUDRATE 115200  // 与树莓派通信串口波特率
-#define USART1_BLE_BAUDRATE 9600   // 蓝牙调试波特率
+#include "Serial.h"
 
 char Serial_RxString[100];  // 串口接收字符串
 
@@ -31,7 +27,7 @@ void Serial_Init(void)
 
     // 配置USART1参数, 当前位蓝牙调试
     USART_InitTypeDef USART_InitStructure;
-    USART_InitStructure.USART_BaudRate = USART1_BLE_BAUDRATE;
+    USART_InitStructure.USART_BaudRate = USART1_PI_BAUDRATE;
     USART_InitStructure.USART_WordLength = USART_WordLength_8b;
     USART_InitStructure.USART_StopBits = USART_StopBits_1;
     USART_InitStructure.USART_Parity = USART_Parity_No;

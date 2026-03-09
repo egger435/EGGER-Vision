@@ -29,7 +29,7 @@ public class ControlCmd
         return "SSA:" + angle.ToString();
     }
 
-    public static string ShiftGear(char gear)             // 切换挡位，SG:'gear'，前进档D，倒车档R，空档N
+    public static string ShiftGear(char gear)           // 切换挡位，SG:'gear'，高速档S, 前进档D，空档N，倒车档R
     {
         return "SG:" + gear;
     }
@@ -64,6 +64,8 @@ public class UDPCtrl : MonoBehaviour
 
     private string appPath;
     private string rootDir;
+
+    public bool udpReady;
 
     void Start()
     {
@@ -129,6 +131,7 @@ public class UDPCtrl : MonoBehaviour
             {
                 UnityEngine.Debug.Log($"成功启动批处理：{batPath}");
                 UnityEngine.Debug.Log("FRP客户端已建立");
+                udpReady = true;
             }
             else
             {
@@ -201,8 +204,7 @@ public class UDPCtrl : MonoBehaviour
             if (data.Length > 0)
             {
                 udpSendClient.Send(data, data.Length, endPoint);
-                UnityEngine.Debug.Log("send:" + message);
-                logText.text = logText.text + "\nsend:" + message;
+                // UnityEngine.Debug.Log("send:" + message);
             }
         }
         catch (System.Exception e)
