@@ -23,6 +23,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x_it.h"
+#include "sys/sys.h"
 
 /** @addtogroup STM32F10x_StdPeriph_Examples
   * @{
@@ -138,6 +139,8 @@ void PendSV_Handler(void)
   */
 void SysTick_Handler(void)
 {
+  LED_Timer++;
+  LED_Flash_Control();
 }
 
 /******************************************************************************/

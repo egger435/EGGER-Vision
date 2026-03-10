@@ -2,6 +2,8 @@
 #include "string.h"
 #include "stdlib.h"
 
+CarGear cur_gear = GEAR_NEUTRAL;  // 默认空档
+
 void Cmd_Change_LED_State(char *args);        // LCS, 改变LED灯状态
 
 void Cmd_Rotate_Camera_Left(char *args);      // RCL, 左转摄像头
@@ -62,14 +64,7 @@ void Cmd_Ctrl(char *cmd)
 // 改变LED状态
 void Cmd_Change_LED_State(char *args)
 {
-    if (LED_State == 1)
-    {
-        TestLED_TurnOff();
-    }
-    else
-    {
-        TestLED_TurnOn();
-    }
+    TestLED_Toggle();
 }
 
 // 控制摄像头左转
@@ -104,12 +99,26 @@ void Cmd_Steering_Servo_Angle(char *args)
     Steering_Servo_SetAngle(targetAngle);
 }
 
+// 切换档位 TODO 档位状态待完成
 void Cmd_Shift_Gear(char *args)
 {
-    // TODO: 切换挡位
+    char gear = args[0];
+    switch(gear)
+    {
+        case 'N': cur_gear = GEAR_NEUTRAL; break;
+        case 'D': cur_gear = GEAR_DRIVE;   break;
+        case 'S': cur_gear = GEAR_SPEED;   break;
+        case 'R': 
+            cur_gear = GEAR_REVERSE;
+            reverse_gear_LED_State = 0;
+            LED_Timer = 0;
+            break;
+        default: cur_gear = GEAR_NEUTRAL; break;
+    }
 }
 
 void Cmd_Motor_Speed(char *args)
 {
     // TODO: 设置电机速度
 }
+

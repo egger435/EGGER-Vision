@@ -7,4 +7,6 @@ void Sys_Init(void)
     TestLED_Init();
     Cam_Servo_Init();
     Steering_Servo_Init();
+
+    SysTick_Config(7200000);
 }
