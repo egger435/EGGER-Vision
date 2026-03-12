@@ -124,8 +124,8 @@ public class CarMoveCtrl : MonoBehaviour
     // 将转向值映射为角度
     private int MapSteeringToAngle(float steeringVal)
     {
-        float angleFloat = (steeringVal + 1) * 90f;
-        angleFloat = Mathf.Clamp(angleFloat, 0f, 180f);
+        float angleFloat = 30f * steeringVal + 90;
+        angleFloat = Mathf.Clamp(angleFloat, 60f, 120f);
         return Mathf.RoundToInt(angleFloat);
     }
 

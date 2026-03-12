@@ -23,5 +23,5 @@ void Steering_Servo_SetAngle(int angle)
 
 void Reset_Pos(void)
 {
-    Steering_Servo_SetAngle(0);
+    Steering_Servo_SetAngle(90);
 }
