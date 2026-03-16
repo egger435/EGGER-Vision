@@ -9,7 +9,7 @@ uint8_t reverse_gear_LED_State = 0;
 // LED初始化
 void TestLED_Init(void)
 {
-    RCC_APB2PeriphClockCmd(TestLED_GPIO, ENABLE);
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
 
     GPIO_InitTypeDef GPIO_InitStructure;
     GPIO_InitStructure.GPIO_Pin = TestLED_Pin;
