@@ -4,6 +4,8 @@
 
 CarGear cur_gear = GEAR_NEUTRAL;  // 默认空档
 
+uint8_t speed_coefficient = 0;    // 速度系数, 用于控制挡位
+
 void Cmd_Change_LED_State(char *args);        // LCS, 改变LED灯状态
 
 void Cmd_Rotate_Camera_Left(char *args);      // RCL, 左转摄像头
@@ -99,19 +101,21 @@ void Cmd_Steering_Servo_Angle(char *args)
     Steering_Servo_SetAngle(targetAngle);
 }
 
-// 切换档位 TODO 档位状态待完成
+// 切换档位
 void Cmd_Shift_Gear(char *args)
 {
     char gear = args[0];
     switch(gear)
     {
-        case 'N': cur_gear = GEAR_NEUTRAL; break;
-        case 'D': cur_gear = GEAR_DRIVE;   break;
-        case 'S': cur_gear = GEAR_SPEED;   break;
+        case 'N': cur_gear = GEAR_NEUTRAL; speed_coefficient = 0; Motor_Stop();    break;
+        case 'D': cur_gear = GEAR_DRIVE;   speed_coefficient = 1; Motor_Forward(); break;
+        case 'S': cur_gear = GEAR_SPEED;   speed_coefficient = 2; Motor_Forward(); break;
         case 'R': 
             cur_gear = GEAR_REVERSE;
             reverse_gear_LED_State = 0;
             LED_Timer = 0;
+            speed_coefficient = 1;
+            Motor_Reverse();
             break;
         default: cur_gear = GEAR_NEUTRAL; break;
     }
@@ -119,6 +123,8 @@ void Cmd_Shift_Gear(char *args)
 
 void Cmd_Motor_Speed(char *args)
 {
-    // TODO: 设置电机速度
+    int targetSpeed = atoi(args) / 2;
+    targetSpeed *= speed_coefficient;
+    Motor_Set_Speed(targetSpeed);
 }
 

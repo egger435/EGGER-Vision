@@ -8,6 +8,7 @@
 #include "../hardware/TestLED.h"
 #include "../hardware/CamServo.h"
 #include "../hardware/SteeringServo.h"
+#include "../hardware/Motor.h"
 
 void Sys_Init(void);
 
