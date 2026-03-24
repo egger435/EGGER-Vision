@@ -1,0 +1,4 @@
+SeverIP = frpsIP地址
+MsgSendPort = 12300
+MsgReceivePort = 13300
+FrpSetupBat = frpc_setup.bat

@@ -39,24 +39,12 @@ public class UDPCtrl : MonoBehaviour
 {
     public static UDPCtrl Instance;
 
-    [Header("配置文本输入框组件")]
-    public InputField serverIPInput;
-    public InputField msgSendPortInput;
-    public InputField msgReceivePortInput;
-    public InputField frpSetupNameInput;
-
-    [Header("配置文本组件")]
-    public Text serverIPText;
-    public Text msgSendPortText;
-    public Text msgReceivePortText;
-    public Text frpSetupNameText;
-
-    private string serverIP = "47.110.89.148";
-
-    private int MSG_SEND_PORT = 12300;  // unity向frp服务器发送消息端口
     private UdpClient udpSendClient;
 
-    private string frpSetupName = "frpc_setup.bat";
+    private string severIP;
+    private int sendPort;
+    public int receivePort;
+    private string frpBat;
 
     [Header("UI控件")]
     public Text sendText;
@@ -73,40 +61,26 @@ public class UDPCtrl : MonoBehaviour
             Instance = this;
     }
 
-    // 自动配置
-    public void AutoSetup()
-    {
-        serverIPText.text = "47.110.89.148";
-        msgSendPortText.text = "12300";
-        msgReceivePortText.text = "13300";
-        frpSetupNameText.text = "_frpc_setup.bat";
-
-        serverIPInput.text = "47.110.89.148";
-        msgSendPortInput.text = "12300";
-        msgReceivePortInput.text = "13300";
-        frpSetupNameInput.text = "_frpc_setup.bat";
-    }
-
-    // 配置确认
-    public void SendSetupConfirm()
-    {
-        if (serverIPText == null || msgSendPortText == null)
-            return;
-        serverIP = serverIPText.text;
-        MSG_SEND_PORT = int.Parse(msgSendPortText.text);
-        frpSetupName = frpSetupNameText.text;
-    }
-
     // 启动frp客户端bat文件
     public void FRPClientBatStart()
     {
-        logText.text += "\n" + "启动frp客户端，请查看控制台...启动后请勿关闭客户端";
+        if (ConfigReader.Instance == null)
+        {
+            return;
+        }
+
+        severIP = ConfigReader.Instance.SeverIP;
+        sendPort = ConfigReader.Instance.MsgSendPort;
+        receivePort = ConfigReader.Instance.MsgReceivePort;
+        frpBat = ConfigReader.Instance.FrpSetupBat;
+
+        logText.text += "\n" + "启动默认frp客户端，请查看控制台...启动后请勿关闭客户端";
         try
         {
             appPath = Application.dataPath;
             rootDir = Path.GetDirectoryName(appPath);
 
-            string batPath = Path.Combine(rootDir, frpSetupName);
+            string batPath = Path.Combine(rootDir, frpBat);
 
             if (!File.Exists(batPath))
             {
@@ -147,10 +121,11 @@ public class UDPCtrl : MonoBehaviour
     // udp发送客户端初始化
     public void SendClientInit()
     {
+        FRPClientBatStart();
         logText.text += "\n" + "正在建立UDP通信...";
         try
         {
-            IPAddress[] addresses = Dns.GetHostAddresses(serverIP);
+            IPAddress[] addresses = Dns.GetHostAddresses(severIP);
             IPAddress ipv4Address = null;
             foreach (var addr in addresses)
             {
@@ -163,15 +138,15 @@ public class UDPCtrl : MonoBehaviour
             }
             if (ipv4Address != null)
             {
-                IPEndPoint endPoint = new IPEndPoint(ipv4Address, MSG_SEND_PORT);
+                IPEndPoint endPoint = new IPEndPoint(ipv4Address, sendPort);
                 udpSendClient = new UdpClient(AddressFamily.InterNetwork);
                 UnityEngine.Debug.Log("UDP 连接到: " + endPoint.Address + ":" + endPoint.Port);
                 logText.text = "UDP 连接到: " + endPoint.Address + ":" + endPoint.Port;
             }
             else
             {
-                UnityEngine.Debug.LogError("未找到 IPv4 地址: " + serverIP);
-                logText.text = "未找到 IPv4 地址: " + serverIP;
+                UnityEngine.Debug.LogError("未找到 IPv4 地址: " + severIP);
+                logText.text = "未找到 IPv4 地址: " + severIP;
             }
         }
         catch (System.Exception e)
@@ -186,7 +161,7 @@ public class UDPCtrl : MonoBehaviour
     {
         try
         {
-            IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(serverIP), MSG_SEND_PORT);
+            IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(severIP), sendPort);
             byte[] data = null;
             string message = string.Empty;
             

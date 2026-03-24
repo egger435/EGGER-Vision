@@ -42,3 +42,4 @@ STM32/.vscode/tasks.json
 /STM32/hal
 /STM32/lib
 /Board/stm32_control_board_backup
+UnityClient/_client_config.txt

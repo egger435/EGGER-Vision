@@ -23,7 +23,6 @@ public class ReceiveCamData : MonoBehaviour
     public Text MsgResvPortText;
 
     [Header("视频流接收")]
-    private int MSG_RECEIVE_PORT = 13300; // Unity监听frp服务器端口
     public RawImage display;             
     private Texture2D texture;
 
@@ -101,20 +100,11 @@ public class ReceiveCamData : MonoBehaviour
         udpReceiveClient?.Close();
     }
 
-    // 配置确认
-    public void ResvSetupConfirm()
-    {
-        if (MsgResvPortText == null)
-            return;
-
-        MSG_RECEIVE_PORT = int.Parse(MsgResvPortText.text);
-    }
-
     // 建立接收客户端
     public void SetupStart()
     {
         logText.text += "\n" + "建立UDP接收客户端...";
-        udpReceiveClient = new UdpClient(MSG_RECEIVE_PORT);
+        udpReceiveClient = new UdpClient(UDPCtrl.Instance.receivePort);
         udpReceiveClient.Client.ReceiveBufferSize = 1024 * 1024;
     }
 
