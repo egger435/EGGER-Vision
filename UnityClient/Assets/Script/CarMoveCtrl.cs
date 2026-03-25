@@ -15,9 +15,20 @@ public enum CarGear
 
 public class CarMoveCtrl : MonoBehaviour
 {
+    [Header("UI")]
+    public Image inputFill;
+    public Image gearImage;
+    public Image steerPosImage;
+    public Sprite gearR;
+    public Sprite gearN;
+    public Sprite gearD;
+    public Sprite gearS;
     public Text steeringValueText;
     public Text moveInputValueText;
     public Text curGearText;
+    private float minFill = 0.2f;
+    private float maxFill = 0.9f;
+    private float currentSteeringAngle = 0f;
 
     public InputActionAsset inputActionAsset;
     private InputAction moveAction;
@@ -43,6 +54,7 @@ public class CarMoveCtrl : MonoBehaviour
         gearActionDown = inputActionAsset.FindActionMap("Car_Move").FindAction("GearDown");
 
         curGearText.text = $"Gear: {(char)curGear}";
+        UpdateGearImage(curGear);
     }
 
     private void OnEnable()
@@ -81,6 +93,7 @@ public class CarMoveCtrl : MonoBehaviour
         if (UDPCtrl.Instance != null)
             UDPCtrl.Instance.SendCommand(ControlCmd.ShiftGear((char)curGear));
         curGearText.text = $"Gear: {(char)curGear}";
+        UpdateGearImage(curGear);
     }
 
     private void OnBtnGearDown(InputAction.CallbackContext context)
@@ -97,12 +110,16 @@ public class CarMoveCtrl : MonoBehaviour
         if (UDPCtrl.Instance != null)
             UDPCtrl.Instance.SendCommand(ControlCmd.ShiftGear((char)curGear));
         curGearText.text = $"Gear: {(char)curGear}";
+        UpdateGearImage(curGear);
     }
 
     private void Update()
     {
         moveInput = moveAction.ReadValue<float>();
         steeringValue = steeringAction.ReadValue<float>();
+
+        UpdateFill(moveInput);
+        UpdateSteeringPos(steeringValue);
 
         if (steeringValueText != null)
         {
@@ -119,6 +136,45 @@ public class CarMoveCtrl : MonoBehaviour
             SendMoveSpeedToPi();
             lastSendTime = Time.time;
         }
+    }
+
+    // 更新输入填充
+    private void UpdateFill(float moveInput)
+    {
+        float targetFillAmount = Mathf.Lerp(minFill, maxFill, moveInput);
+
+        inputFill.fillAmount = Mathf.Lerp(inputFill.fillAmount, targetFillAmount, Time.deltaTime * 8);
+    }
+
+    private void UpdateGearImage(CarGear curGear)
+    {
+        switch (curGear)
+        {
+            case CarGear.Reverse:
+                gearImage.sprite = gearR;
+                break;
+            case CarGear.Neutral:
+                gearImage.sprite = gearN;
+                break;
+            case CarGear.Drive:
+                gearImage.sprite = gearD;
+                break;
+            case CarGear.Speed:
+                gearImage.sprite = gearS;
+                break;
+            default:
+                gearImage.sprite = gearN;
+                break;
+        }
+    }
+
+    private void UpdateSteeringPos(float steeringValue)
+    {
+        float targetAngle = -steeringValue * 123;
+
+        currentSteeringAngle = Mathf.Lerp(currentSteeringAngle, targetAngle, Time.deltaTime * 10);
+        // 应用旋转
+        steerPosImage.rectTransform.localRotation = Quaternion.Euler(0, 0, currentSteeringAngle);
     }
 
     // 将转向值映射为角度
