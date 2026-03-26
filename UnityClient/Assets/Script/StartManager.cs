@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class StartManager : MonoBehaviour
 {
@@ -27,7 +26,7 @@ public class StartManager : MonoBehaviour
     void Start()
     {
         _state = State.Idle;
-        SetStartPos();
+        // SetStartPos();
     }
 
     // Update is called once per frame
@@ -36,7 +35,7 @@ public class StartManager : MonoBehaviour
         if (_state == State.Idle)
         {
             idleTimer += Time.deltaTime;
-            if (idleTimer > 2)
+            if (idleTimer > 0.5)
             {
                 StartMove();
             }
