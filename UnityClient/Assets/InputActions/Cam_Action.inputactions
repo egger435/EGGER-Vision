@@ -48,8 +48,30 @@
                 },
                 {
                     "name": "",
+                    "id": "c32ce07b-ac8b-45dd-9aef-b5fcb0e6b01f",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Rotate_Camera_Left",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "727565b3-c9de-411b-a6a6-aec391a69c46",
                     "path": "<XInputController>/dpad/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Rotate_Camera_Right",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a14077be-63d6-432f-adc0-9ed337fc524a",
+                    "path": "<Keyboard>/rightArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

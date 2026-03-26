@@ -7,7 +7,7 @@ public class ConfigReader : MonoBehaviour
 {
     public static ConfigReader Instance;
 
-    private string configPath = "_client_config.txt";
+    private string configPath = "client_config.txt";
     private Dictionary<string, string> configDict = new Dictionary<string, string>();
 
     public string SeverIP => GetConfigValue("SeverIP");

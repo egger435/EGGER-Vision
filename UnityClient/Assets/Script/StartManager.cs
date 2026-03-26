@@ -21,19 +21,27 @@ public class StartManager : MonoBehaviour
     private State _state;
     private float curMoveTime = 0;
     private float fadeTimer = 0;
+    private float idleTimer = 0;
 
     // Start is called before the first frame update
     void Start()
     {
         _state = State.Idle;
         SetStartPos();
-        StartMove();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (_state == State.Moving)
+        if (_state == State.Idle)
+        {
+            idleTimer += Time.deltaTime;
+            if (idleTimer > 2)
+            {
+                StartMove();
+            }
+        }
+        else if (_state == State.Moving)
         {
             DoMove();
         }
